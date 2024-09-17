@@ -1,10 +1,14 @@
 import ProfileSetup from "@/pages/Auth/ProfileSetup";
-import React from "react";
 
-export default function ProfileSetupPage() {
+export default function ProfileSetupPage({
+  searchParams,
+}: {
+  searchParams: { step?: string };
+}) {
+  const step = searchParams.step ?? "1";
   return (
     <div>
-      <ProfileSetup />
+      <ProfileSetup step={step} />
     </div>
   );
 }

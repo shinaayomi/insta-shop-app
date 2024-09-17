@@ -13,11 +13,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { ChangeEvent, useMemo, useState } from "react";
 import { IoMdArrowBack } from "react-icons/io";
 
-export default function ProfileSetup() {
-  const [stepper, setStepper] = useState(1);
+export default function ProfileSetup({ step }: { step: string }) {
   const searchUrl = useSearchParams();
-  const getUrl = searchUrl.get("step");
+  const getUrl = step ? searchUrl.get("step") : "1";
   const router = useRouter();
+  const [stepper, setStepper] = useState(1);
   // const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -54,11 +54,13 @@ export default function ProfileSetup() {
     router.push("/auth/setup-profile?step=3");
     setStepper(3);
   };
-  const handleThirdContinue = () => {};
+  const handleThirdContinue = () => {
+    router.push("/product/create-product");
+  };
 
   return (
     <div>
-      <div className="max-w-[500px] min-h-screen mx-auto flex flex-col pt-12 pb-6 px-4">
+      <div className="max-w-[1000px] min-h-screen mx-auto flex flex-col pt-8 md:pt-12 pb-6 px-4">
         <div className="flex items-center gap-2 mb-5">
           <button onClick={() => router.back()}>
             <IoMdArrowBack color="#00000099" />
@@ -84,11 +86,10 @@ export default function ProfileSetup() {
               We will send you a verification code for confirmation
             </p>
             <Input placeholder="Enter phone number of email" />
-            <FilledButton
-              onClick={handleFirstContinue}
-              className="mt-auto"
-              label="Continue"
-            />
+
+            <div className="border-t border-[#0000001A] pt-4 mt-auto -mx-4 px-4">
+              <FilledButton onClick={handleFirstContinue} label="Continue" />
+            </div>
           </React.Fragment>
         )}
 
@@ -121,16 +122,16 @@ export default function ProfileSetup() {
               <Input placeholder="Phone number" />
               <Input placeholder="Email" />
             </div>
-            <FilledButton
-              onClick={handleSecondContinue}
-              className="mt-auto"
-              label="Continue"
-            />
+
+            <div className="border-t border-[#0000001A] pt-4 mt-auto -mx-4 px-4">
+              <FilledButton onClick={handleSecondContinue} label="Continue" />
+            </div>
           </React.Fragment>
         )}
 
         {stepper === 3 && (
           <React.Fragment>
+            {/* start upload image */}
             <div className="h-[140px] flex flex-col items-center justify-center gap-3 border-[0.5px] border-[#00000033] rounded-xl mb-2 mt-5">
               {imagePreview ? (
                 <div>
@@ -161,6 +162,7 @@ export default function ProfileSetup() {
                 </>
               )}
             </div>
+            {/* end upload image */}
             <div className="grid gap-3 mb-10">
               <Input placeholder="Store name" />
               <Input placeholder="Store tag name" />
@@ -169,11 +171,9 @@ export default function ProfileSetup() {
               <Input placeholder="Category" />
             </div>
 
-            <FilledButton
-              onClick={handleThirdContinue}
-              className="mt-auto"
-              label="Continue"
-            />
+            <div className="border-t border-[#0000001A] pt-4 mt-auto -mx-4 px-4">
+              <FilledButton onClick={handleThirdContinue} label="Continue" />
+            </div>
           </React.Fragment>
         )}
       </div>
